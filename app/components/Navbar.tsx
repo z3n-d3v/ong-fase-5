@@ -23,6 +23,7 @@ export const Navbar = () => {
           <nav className="hidden md:flex space-x-6 ml-auto">
             <Link to="/" className="hover:underline">Home</Link>
             <Link to="/contact-us" className="hover:underline">Fale Conosco</Link>
+            <Link to="/join-us" className="hover:underline">Cadastro</Link>
           </nav>
 
           {/* <!-- Mobile Hamburger --> */}
@@ -40,6 +41,7 @@ export const Navbar = () => {
       <div id="mobile-menu" className={`${open ? '' : 'md:hidden hidden'} bg-green-600`}>
         <Link to="/" className="block px-4 py-2 hover:bg-green-800">Home</Link>
         <Link to="/contact-us" className="block px-4 py-2 hover:bg-green-800">Fale Conosco</Link>
+        <Link to="/join-us" className="block px-4 py-2 hover:bg-green-800">Cadastro</Link>
       </div>
     </header >
   )

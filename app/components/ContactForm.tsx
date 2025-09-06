@@ -3,8 +3,7 @@ export const ContactForm = () => {
     <section className="container mx-auto bg-white py-12 px-16">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Fale Conosco</h2>
       <p className="text-gray-600 mb-8">
-        Tem interesse em participar da rede ou quer saber mais? Preencha o
-        formulário abaixo:
+        Quer saber mais? Preencha o formulário abaixo:
       </p>
 
       <form className="space-y-6 max-w-2xl">
@@ -102,6 +101,5 @@ export const ContactForm = () => {
         </button>
       </form>
     </section>
-
   )
 }

@@ -4,7 +4,7 @@ export const Footer = () => {
       <p className="mb-0">
         &copy; 2025 ONG Integra. Todos os direitos reservados.</p>
       <p className="mb-0">
-        <a href="https://vimeo.com/1094253431/e5afb7c07a?share=copy" target="_blank">
+        <a href="https://vimeo.com/1116486087/a9fc0246ec?share=copy" target="_blank">
           Link para o Pitch Video.</a></p>
     </footer>
   )

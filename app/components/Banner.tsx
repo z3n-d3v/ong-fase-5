@@ -14,7 +14,7 @@ export const Banner = () => {
         </div>
       </section>
 
-      <section className="container bg-white text-center py-12 px-16">
+      <section className="container-flex bg-white text-center py-12 px-16">
         <h2 className="text-4xl text-left font-semibold text-gray-800 mb-6">
           Nossa Missão
         </h2>

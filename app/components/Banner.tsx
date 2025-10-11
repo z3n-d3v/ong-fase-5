@@ -1,3 +1,5 @@
+import { ContractorMap } from "./ContractorMap"
+
 export const Banner = () => {
   return (
     <>
@@ -78,6 +80,19 @@ export const Banner = () => {
           </ul>
         </div>
       </section>
+      
+      <section className="bg-gray-100 text-center py-12 px-4">
+        <div className="container mx-auto">
+          <h1 className="text-4xl font-normal text-gray-800 mb-4">
+            Mapa de Parceiros
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Conheça nossos distribuidores e fornecedores atuais
+          </p>
+        </div>
+      </section>
+
+      <ContractorMap  />
     </>
   )
 }

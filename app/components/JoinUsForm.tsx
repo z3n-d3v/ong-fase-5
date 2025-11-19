@@ -2,15 +2,83 @@ import { useState } from "react";
 import axios from "axios";
 
 export const JoinUsForm = () => {
+  const [form, setForm] = useState({
+    nome: "Joao",
+    email: "",
+    categoria: "agricultor",
+    mensagem: "Olá quero fazer parte",
+    location: "",
+    dob: "",
+    culture: "Milho",
+    interest: 'supply',
+    cep: "",
+  });
+
   const [address, setAddress] = useState(null);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
   const fetchAddress = async (input) => {
+    handleChange(input);
+
     const value = input.target.value;
 
     const request = await axios.get(`https://brasilapi.com.br/api/cep/v2/${value}`)
 
     setAddress(request.data)
   };
+
+  const showLocation = () => {
+    if ("geolocation" in navigator) {
+      /* geolocation is available */
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          handleChange({ target: { name: 'location', value: `${latitude}, ${longitude}` } });
+
+          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+          // You can now use these coordinates, for example, to display on a map.
+        },
+        (error) => {
+          // Handle errors, such as user denying permission or location not available
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.error("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.error("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              console.error("The request to get user location timed out.");
+              break;
+            case error.UNKNOWN_ERROR:
+              console.error("An unknown error occurred.");
+              break;
+          }
+        }
+      );
+    } else {
+      /* geolocation IS NOT available */
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }
+
+  const handleSubmit = () => {
+    if (form.location && typeof form.location === 'string') {
+      const records = JSON.parse(localStorage.getItem('stakeholders'));
+
+      const updatedRecords = [...records, form];
+
+      localStorage.setItem('stakeholders', JSON.stringify(updatedRecords));
+
+      alert('Processando cadastro!');
+    }
+  }
 
   return (
     <>
@@ -21,7 +89,7 @@ export const JoinUsForm = () => {
           formulário abaixo:
         </p>
 
-        <form className="space-y-6 max-w-2xl">
+        <form className="space-y-6 max-w-2xl" onSubmit={handleSubmit}>
           {/* Nome */}
           <div>
             <label
@@ -34,6 +102,7 @@ export const JoinUsForm = () => {
               type="text"
               id="nome"
               required
+              onChange={handleChange}
               placeholder="Joao Silva"
               pattern="^[A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+ [A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+$"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
@@ -56,6 +125,7 @@ export const JoinUsForm = () => {
               type="email"
               id="email"
               required
+              onChange={handleChange}
               pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               placeholder="joao_silva@email.com"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
@@ -75,6 +145,8 @@ export const JoinUsForm = () => {
               <select
                 id="categoria"
                 required
+                onChange={handleChange}
+                required
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               >
                 <option value="">Selecione...</option>
@@ -91,13 +163,13 @@ export const JoinUsForm = () => {
 
           <div>
             <label
-              htmlFor="categoria"
+              htmlFor="dob"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
               Data de Nascimento
             </label>
 
-            <input type="date" />
+            <input onChange={handleChange} name="dob" type="date" required />
           </div>
 
           <div>
@@ -107,14 +179,21 @@ export const JoinUsForm = () => {
             >
               CEP
             </label>
-            <input
-              type="text"
-              id="cep"
-              required
-              placeholder="280133-185"
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
-              onChange={fetchAddress}
-            />
+
+            <div className="flex flex-row justify-around gap-2 align-center">
+              <input
+                type="text"
+                id="cep"
+                name="cep"
+                required
+                placeholder="280133-185"
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
+                onChange={fetchAddress}
+              />
+
+              <button type="button" className="btn bg-emerald-400 px-2 rounded text-white h-11" onClick={showLocation}>Pesquisar</button>
+            </div>
+
             <p className="mt-1 text-sm text-gray-500">
               Insira seu CEP, vamos procurar pela sua localidade.
             </p>
@@ -141,8 +220,10 @@ export const JoinUsForm = () => {
               Tipo de Cultura
             </label>
             <input
+              name="culture"
               type="text"
               id="culture"
+              onChange={handleChange}
               required
               placeholder="Milho"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
@@ -154,7 +235,7 @@ export const JoinUsForm = () => {
 
           <div>
             <label
-              htmlFor="market-interest"
+              htmlFor="interest"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
               Mercado de Interesse
@@ -162,8 +243,10 @@ export const JoinUsForm = () => {
 
             <div className="relative">
               <select
-                id="market-interest"
+                name="interest"
+                id="interest"
                 required
+                onChange={handleChange}
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               >
                 <option value="">Selecione...</option>

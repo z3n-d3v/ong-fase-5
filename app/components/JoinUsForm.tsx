@@ -78,6 +78,8 @@ export const JoinUsForm = () => {
       localStorage.setItem('stakeholders', JSON.stringify(updatedRecords));
 
       alert('Processando cadastro!');
+    } else {
+      alert('Opa! Falta o campo da localização!');
     }
   }
 

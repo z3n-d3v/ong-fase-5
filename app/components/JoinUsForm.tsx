@@ -21,17 +21,13 @@ export const JoinUsForm = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const fetchAddress = async (input) => {
-    handleChange(input);
-
-    const value = input.target.value;
-
+  const fetchAddress = async (value) => {
     const request = await axios.get(`https://brasilapi.com.br/api/cep/v2/${value}`)
 
     setAddress(request.data)
   };
 
-  const showLocation = () => {
+  const fetchGeoLocation = () => {
     if ("geolocation" in navigator) {
       /* geolocation is available */
       navigator.geolocation.getCurrentPosition(
@@ -66,6 +62,11 @@ export const JoinUsForm = () => {
       /* geolocation IS NOT available */
       console.error("Geolocation is not supported by this browser.");
     }
+  }
+
+  const getLocation = (args) => {
+    fetchAddress(form.cep);
+    fetchGeoLocation();
   }
 
   const handleSubmit = () => {
@@ -146,7 +147,6 @@ export const JoinUsForm = () => {
                 id="categoria"
                 required
                 onChange={handleChange}
-                required
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               >
                 <option value="">Selecione...</option>
@@ -188,10 +188,10 @@ export const JoinUsForm = () => {
                 required
                 placeholder="280133-185"
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
-                onChange={fetchAddress}
+                onChange={handleChange}
               />
 
-              <button type="button" className="btn bg-emerald-400 px-2 rounded text-white h-11" onClick={showLocation}>Pesquisar</button>
+              <button type="button" className="btn bg-emerald-400 px-2 rounded text-white h-11" onClick={getLocation}>Pesquisar</button>
             </div>
 
             <p className="mt-1 text-sm text-gray-500">

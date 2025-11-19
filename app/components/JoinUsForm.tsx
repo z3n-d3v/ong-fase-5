@@ -197,7 +197,7 @@ export const JoinUsForm = () => {
             </div>
 
             <p className="mt-1 text-sm text-gray-500">
-              Insira seu CEP, vamos procurar pela sua localidade.
+              Insira seu CEP, vamos procurar pela sua localidade. Seu CEP é indispensável no processo.
             </p>
           </div>
 
